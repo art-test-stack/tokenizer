@@ -64,10 +64,12 @@
 
 ### Built With
 
-* [![Numpy][Numpy]][Numpy-url]
-* [![React][Matplotlib]][Matplotlib-url]
-* [![Sklearn][Sklearn]][Sklearn-url]
-* [![Tqdm][Tqdm]][Tqdm-url]
+||Backend|Frontend|
+|-|-|-|
+|Server|[![Python][Python]][Python-url][![FastAPI][FastAPI]][FastAPI-url]|[![TypeScript][TypeScript]][TypeScript-url][![NodeJS][NodeJS]][NodeJS-url]
+|Libraries/Frameworks|[![Tqdm][Tqdm]][Tqdm-url][![Regex][Regex]][Regex-url]|[![React][React]][React-url]|
+|Tokenizers|[![HuggingFace][HuggingFace]][HuggingFace-url][![Tiktoken][Tiktoken]][Tiktoken-url]|
+
 
 
 <!-- GETTING STARTED -->
@@ -177,11 +179,21 @@ Project Link: [https://github.com/art-test-stack/tokenizer](https://github.com/a
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/arthur-testard
 [product-screenshot]: images/screenshot.png
-[Numpy]: https://img.shields.io/badge/numpy-%23013243.svg?style=for-the-badge&logo=numpy&logoColor=white
-[Numpy-url]: https://numpy.org/
-[Sklearn]: https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white
-[Sklearn-url]: https://scikit-learn.org/stable/
-[Matplotlib]: https://img.shields.io/badge/Matplotlib-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[Matplotlib-url]: https://matplotlib.org/
+[Python]: https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54
+[Python-url]: https://www.python.org/
+[TypeScript]: https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white
+[TypeScript-url]: https://www.typescriptlang.org/
+[NodeJS]: https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white
+[NodeJS-url]: https://nodejs.org/en
+[FastAPI]: https://img.shields.io/badge/fastapi-%23013243.svg?style=for-the-badge&logo=fastapi&logoColor=white
+[FastAPI-url]: https://fastapi.tiangolo.com/
+[HuggingFace]: https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-white?style=for-the-badge
+[HuggingFace-url]: https://huggingface.co/docs
+[Tiktoken]: https://img.shields.io/badge/tiktoken-20232A?style=for-the-badge&logo=tiktoken&logoColor=61DAFB
+[Tiktoken-url]: https://github.com/openai/tiktoken
+[React]: https://shields.io/badge/react-black?logo=react&style=for-the-badge
+[React-url]: https://react.dev/
 [Tqdm]: https://img.shields.io/badge/tqdm-35495E?style=for-the-badge
 [Tqdm-url]: https://tqdm.github.io/
+[Regex]: https://img.shields.io/badge/regex-35495E?style=for-the-badge
+[Regex-url]: https://github.com/mrabarnett/mrab-regex
