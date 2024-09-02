@@ -10,7 +10,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/art-test-stack/tokenizer">
-    <img src="rsc/logo.jpg" alt="Logo" height="350">
+    <img src="rsc/logo.jpg" alt="Logo" height="100">
   </a>
 
 <h3 align="center">Tokenizer</h3>
