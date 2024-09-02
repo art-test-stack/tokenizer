@@ -16,7 +16,7 @@
 <h3 align="center">Tokenizer</h3>
 
   <p align="center">
-    This project does not have as purpose to be used to develop tokenizers. I just aim to develop this framework by myself to get a better understanding of how tokenizers work, by implementing in different ways, and comparing to performing ones, such as [Tiktoken](https://github.com/openai/tiktoken).
+    This project does not have as purpose to be used to develop tokenizers. I just aim to develop this framework by myself to get a better understanding of how tokenizers work, by implementing in different ways, and comparing to performing ones, such as <a href="https://github.com/openai/tiktoken">Tiktoken</a>.
     <br />
     <a href="https://github.com/art-test-stack/tokenizer"><strong>Explore the docs »</strong></a>
     <br />
@@ -112,12 +112,12 @@
   ```
 
 
-## Usage
+<!-- ## Usage
 
 This framework permits to easily create a neural network without coding, and to train it on any data. So, anyone who want to create a neural network but don't know how to code can use it as a first step to see how neural nets work !
 
 However, I don't recommand it it's better to code lol.
-
+ -->
 
 
 <!-- ROADMAP -->
