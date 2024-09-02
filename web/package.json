@@ -1,5 +1,5 @@
 {
-  "name": "tokenizer-frontend",
+  "name": "tokenizer-web",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
