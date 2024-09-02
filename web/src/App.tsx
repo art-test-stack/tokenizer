@@ -1,11 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const App: React.FC = () => {
   const [text, setText] = useState<string>("");
-  const [tokens, setTokens] = useState<string[]>([]);
+  const [tokens, setTokens] = useState<string[]>([""]);
+  const [selectedTokenizer, setSelectedTokenizer] = useState<string>("");
+  const [tokenizers, setTokenizers] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchTokenizers = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/tokenizers");
+        console.log(response)
+        if (response) {
+          const data = await response.json();
+          setTokenizers(data.tokenizers);
+          console.log("tokenizers:", data)
+          if (data.tokenizers.length > 0) {
+            setSelectedTokenizer(data.tokenizers[0]);
+          }
+        } else {
+          console.error("Failed to fetch tokenizers");
+        }
+      } catch (error) {
+        console.error("Error fetching tokenizers:", error);
+      }
+    };
+
+    fetchTokenizers();
+  }, []);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
+  };
+
+  const handleTokenizerChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedTokenizer(e.target.value);
   };
 
   const handleSubmit = async () => {
@@ -15,7 +44,7 @@ const App: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ text, tokenizer: selectedTokenizer }),
       });
 
       if (response.ok) {
@@ -32,6 +61,7 @@ const App: React.FC = () => {
   return (
     <div style={{ padding: "20px" }}>
       <h1>Text Tokenizer</h1>
+
       <textarea
         value={text}
         onChange={handleTextChange}
@@ -40,15 +70,40 @@ const App: React.FC = () => {
         cols={50}
         style={{ marginBottom: "20px" }}
       />
+
       <br />
+
+      <label>
+        Choose Tokenizer: 
+        <select value={selectedTokenizer} onChange={handleTokenizerChange} style={{ marginLeft: "10px" }}>
+          {tokenizers.map((tokenizer, index) => (
+            <option key={index} value={tokenizer}>
+              {tokenizer}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <br /><br />
+
       <button onClick={handleSubmit}>Tokenize</button>
+
       <div>
         <h2>Tokens:</h2>
-        <ul>
+        <textarea
+          value={tokens.map((token) => token)}
+          disabled={true}
+          // onChange={handleTextChange}
+          // placeholder="Enter text to tokenize"
+          rows={4}
+          cols={50}
+          style={{ marginBottom: "20px" }}
+        />
+        {/* <ul>
           {tokens.map((token, index) => (
             <li key={index}>{token}</li>
           ))}
-        </ul>
+        </ul> */}
       </div>
     </div>
   );

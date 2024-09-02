@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+datasets
+tokenizers
+tiktoken
+unidecode
+regex
+pillow
+tqdm
