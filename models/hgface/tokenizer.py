@@ -1,4 +1,4 @@
- import models.pretokenizer as pretk
+import models.pretokenizer as pretk
 from utils.clean import *
 from utils.utils import *
 from utils.settings import *
