@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-const App: React.FC = () => {
-  const [text, setText] = useState<string>("");
-  const [tokens, setTokens] = useState<string[]>([""]);
-  const [selectedTokenizer, setSelectedTokenizer] = useState<string>("");
-  const [tokenizers, setTokenizers] = useState<string[]>([]);
+const App = () => {
+  const [text, setText] = useState("");
+  const [tokens, setTokens] = useState([""]);
+  const [selectedTokenizer, setSelectedTokenizer] = useState("");
+  const [tokenizers, setTokenizers] = useState([]);
 
   useEffect(() => {
     const fetchTokenizers = async () => {
@@ -29,11 +29,11 @@ const App: React.FC = () => {
     fetchTokenizers();
   }, []);
 
-  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleTextChange = (e) => {
     setText(e.target.value);
   };
 
-  const handleTokenizerChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleTokenizerChange = (e) => {
     setSelectedTokenizer(e.target.value);
   };
 
@@ -61,18 +61,6 @@ const App: React.FC = () => {
   return (
     <div style={{ padding: "20px" }}>
       <h1>Text Tokenizer</h1>
-
-      <textarea
-        value={text}
-        onChange={handleTextChange}
-        placeholder="Enter text to tokenize"
-        rows={4}
-        cols={50}
-        style={{ marginBottom: "20px" }}
-      />
-
-      <br />
-
       <label>
         Choose Tokenizer: 
         <select value={selectedTokenizer} onChange={handleTokenizerChange} style={{ marginLeft: "10px" }}>
@@ -83,27 +71,26 @@ const App: React.FC = () => {
           ))}
         </select>
       </label>
-
-      <br /><br />
-
+      <br/>
+      <textarea
+        value={text}
+        onChange={handleTextChange}
+        placeholder="Enter text to tokenize"
+        rows={4}
+        cols={50}
+        style={{ marginBottom: "20px" }}
+      />
+      <br/><br/>
       <button onClick={handleSubmit}>Tokenize</button>
-
       <div>
         <h2>Tokens:</h2>
         <textarea
           value={tokens.map((token) => token)}
           disabled={true}
-          // onChange={handleTextChange}
-          // placeholder="Enter text to tokenize"
           rows={4}
           cols={50}
           style={{ marginBottom: "20px" }}
         />
-        {/* <ul>
-          {tokens.map((token, index) => (
-            <li key={index}>{token}</li>
-          ))}
-        </ul> */}
       </div>
     </div>
   );
