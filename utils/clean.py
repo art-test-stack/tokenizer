@@ -1,4 +1,4 @@
-from michelgpt.settings import *
+from utils.settings import *
 
 import regex
 from unidecode import unidecode
