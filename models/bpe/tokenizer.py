@@ -1,5 +1,5 @@
 from models.bpe.utils import *
-from models.bpe.settings import *
+from utils.settings import *
 
 import regex as re
 from typing import List, Dict
