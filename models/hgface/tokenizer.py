@@ -1,6 +1,7 @@
 from models.basetokenizer import BaseTokenizer
 import models.pretokenizer as pretk
 from utils.clean import *
+from utils.settings import TOKEN_SPLIT_PATTERN
 from utils.utils import *
 from utils.settings import *
 
@@ -20,17 +21,16 @@ from typing import Dict, List
 from tqdm import tqdm
 from copy import copy
 
-class HGFBPETokenizer(BaseTokenizer):
-
+class HGFBPETokenizer(BaseTokenizer): 
     def __init__(
             self, 
             split_pattern: str = TOKEN_SPLIT_PATTERN, 
             directory: Path = DATA_FOLDER,
-            vocab_dir: Path = VOCAB_FILE,
-            model_dir: Path = DATA_FOLDER.joinpath("trainer.pkl"),
+            vocab_file: Path = VOCAB_FILE,
+            model_file: Path = Path("trainer.pkl"),
             special_tokens: List[str] | str = CONTROL_TOKENS_LIST
         ) -> None:
-        self.__init__()
+        super().__init__(split_pattern, directory, vocab_file, special_tokens)
         self.to_index: Dict[str, int] = {}
         self.to_token: Dict[int, str] = {}
         self.control_tokens: List[str] = special_tokens
@@ -38,13 +38,13 @@ class HGFBPETokenizer(BaseTokenizer):
         self.special_tokens: Dict[int, str] = {}
 
         self.directory: Path = directory
-        if directory.joinpath('vocab.json').exists():
+        if directory.joinpath(vocab_file).exists():
             self.load_vocab()
         # else:
         #     self.create()
         #     save_text_array(self.vocab, file.joinpath('vocab.txt'))
-
-        if directory.joinpath('trainer.pt').exists():
+        self.model_file = model_file
+        if directory.joinpath(model_file).exists():
             self.load_trainer()
         else:
             self.trainer: Trainer = BpeTrainer(
@@ -167,23 +167,24 @@ class HGFBPETokenizer(BaseTokenizer):
 
 
     def save_vocab(self):
-        with open(self.directory.joinpath('vocab.json'), 'w') as vf:
+        with open(self.directory.joinpath(self.vocab_file), 'w') as vf:
             json.dump(self.to_token, vf)
 
 
     def load_vocab(self):
-        with open(self.directory.joinpath('vocab.json'), 'rb') as vf:
+        with open(self.directory.joinpath(self.vocab_file), 'rb') as vf:
             self.to_token = json.load(vf)
             self.to_index = {v: k for k, v in self.to_token.items()}
 
 
     def save_trainer(self):
-        with open(self.directory.joinpath('trainer.pkl'), 'wb') as directory:
+        with open(self.directory.joinpath(self.model_file), 'wb') as directory:
             pickle.dump(self.trainer, directory)
 
 
     def load_trainer(self):
-        self.trainer = pickle.load(self.directory.joinpath('trainer.pkl'), 'rb')
+        with open(self.directory.joinpath(self.model_file), 'rb') as file:
+            self.trainer = pickle.load(file)
 
 
     def encode(

@@ -1,6 +1,8 @@
 from models import BaseTokenizer
 from utils.app_settings import available_tokenizers
 
+from utils.settings import *
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -33,10 +35,10 @@ async def get_tokenizers():
 
 @app.post("/tokenize")
 async def tokenize_text(data: Text2Encode):
-    print("data:", data)
     tokenizer_name, text = data.tokenizer if data.tokenizer else "bpe", data.text
-
-    tokenizer: BaseTokenizer = available_tokenizers.get(tokenizer_name)() # TODO: handdle parameters here
+    tokenizer: BaseTokenizer = available_tokenizers.get(tokenizer_name)(
+        directory=DATA_FOLDER.joinpath(tokenizer_name)
+    ) # TODO: handdle parameters automatically here
     if not tokenizer:
         return {"error": "tokenizer not implemented"}
     

@@ -7,20 +7,48 @@ from typing import List, Dict
 from pathlib import Path
 from tqdm import tqdm
 
+from utils.settings import *
+
 
 class BPETokenizer(BaseTokenizer):
+    def __init__(
+            self,
+            split_pattern: str = TOKEN_SPLIT_PATTERN,
+            directory: Path = DATA_FOLDER,
+            vocab_file: Path = VOCAB_FILE,
+            special_tokens: List[str] | str = CONTROL_TOKENS_LIST
+        ) -> None:
+        super().__init__(split_pattern, directory, vocab_file, special_tokens)
 
-    def __init__(self, split_pattern: str = TOKEN_SPLIT_PATTERN, special_tokens: List[str] = CONTROL_TOKENS_LIST):
         self.merges = {} 
         self.pattern = "" 
-        self.special_tokens = {} 
-        self.vocab = self._build_vocab()
+        # self.special_tokens = {} 
+        # self.vocab_file = vocab_file
+        # self.vocab = self._build_vocab()
 
         self.split_pattern = split_pattern
         self.compiled_pattern = re.compile(self.split_pattern)
         self.special_tokens = {}
         self.inverse_special_tokens = {}
 
+
+    # def train(self):
+    #     self.create()
+    
+    # def load_vocab(self):
+    #     NotImplementedError()
+
+    # def create(self):
+    #     NotImplementedError()
+
+    # def encode(self):
+    #     NotImplementedError()
+
+    # def decode(self):
+    #     NotImplementedError()
+
+    # def _add_special_tokens_to_vocab(self):
+    #     NotImplementedError()
 
     def create(self, text: List[str] | str, vocab_size: int = VOCAB_SIZE, verbose: bool = True):
         assert vocab_size >= 256

@@ -1,5 +1,5 @@
 from models import BaseTokenizer
-from utils import available_tokenizers
+from utils.app_settings import available_tokenizers
 from utils.settings import *
 
 from datasets import load_dataset
@@ -7,11 +7,6 @@ from datasets import load_dataset
 from pathlib import Path
 import argparse
 
-# available_tokenizers = {
-#     "custom_bpe": BPETokenizer,
-#     "hgface_bpe": HGFBPETokenizer,
-#     # "tiktoken": TikTokenizer, # special
-# }
 
 def main():
     parser = argparse.ArgumentParser(
@@ -35,7 +30,7 @@ def main():
     model_file = Path(args.model_file) if args.model_file else None
 
     print(f"{args.tokenizer_name} training starts...")
-    print(f"Directory:", args.directory_name)
+    print(f"Directory:", args.directory)
 
     print("Dataset:", "wikipedia --20220301.en")
     wikipedia_dataset = load_dataset("wikipedia", "20220301.en")
@@ -45,12 +40,18 @@ def main():
     set_for_train = [ text for text in wiki_set[:data_size]["text"]]
 
     tk: BaseTokenizer = available_tokenizers.get(tokenizer_name)(
-
+        directory=dir_name.joinpath(tokenizer_name),
+        vocab_dir=vocab_file,
+        vocab_size=vocab_size
     )
-
+    tk_params = {
+        "directory": dir_name.joinpath(tokenizer_name),
+        "vocab_dir": vocab_file,
+        "vocab_size": vocab_size
+    }
     tk.train(set_for_train, vocab_size=VOCAB_SIZE, verbose=False)
     # tk.register_special_tokens(CONTROL_TOKENS_LIST)
-    tk.save()
+    # tk.save()
 
 
 if __name__ == "__main__":
