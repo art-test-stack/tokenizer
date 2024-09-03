@@ -1,10 +1,11 @@
+from models import BaseTokenizer
+from utils.app_settings import available_tokenizers
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
-from models.bpe.tokenizer import Tokenizer as BPETokenizer
-from models.hgface.tokenizer import Tokenizer as HGFTokenizer
-from models.tiktoken.tokenizer import Tokenizer as TikTokenizer
+
 
 app = FastAPI()
 
@@ -14,9 +15,7 @@ app.add_middleware(
         "http://localhost.tiangolo.com",
         "https://localhost.tiangolo.com",
         "http://localhost",
-        # "http://localhost:8000",
         "http://localhost:3000",
-        # "*"
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -27,27 +26,21 @@ class Text2Encode(BaseModel):
     tokenizer: str | None
     text: str
 
-tokenizers = {
-    "bpe": BPETokenizer(),
-    "hgface": HGFTokenizer(),
-    # "tiktoken": TikTokenizer(),
-}
-
 @app.get("/tokenizers")
 async def get_tokenizers():
-    print('tokenizers list ->', list(tokenizers.keys()))
-    return {"tokenizers": list(tokenizers.keys())}
+    tokenizers = list(available_tokenizers.keys())
+    return {"tokenizers": tokenizers}
 
 @app.post("/tokenize")
 async def tokenize_text(data: Text2Encode):
+    print("data:", data)
     tokenizer_name, text = data.tokenizer if data.tokenizer else "bpe", data.text
 
-    tokenizer = tokenizers.get(tokenizer_name)
+    tokenizer: BaseTokenizer = available_tokenizers.get(tokenizer_name)() # TODO: handdle parameters here
     if not tokenizer:
         return {"error": "tokenizer not implemented"}
     
     encoded = tokenizer.encode(text)
-    print('encoded', encoded)
     return {"tokens": encoded}
 
 if __name__ == "__main__":
