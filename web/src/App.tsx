@@ -6,15 +6,18 @@ const App = () => {
   const [selectedTokenizer, setSelectedTokenizer] = useState("");
   const [tokenizers, setTokenizers] = useState([]);
 
+  console.log("text", text)
+  console.log("tokens", tokens)
+  console.log("selectedTokenizer", selectedTokenizer)
+  console.log("tokenizers", tokenizers)
+
   useEffect(() => {
     const fetchTokenizers = async () => {
       try {
         const response = await fetch("http://localhost:8000/tokenizers");
-        console.log(response)
         if (response) {
           const data = await response.json();
           setTokenizers(data.tokenizers);
-          console.log("tokenizers:", data)
           if (data.tokenizers.length > 0) {
             setSelectedTokenizer(data.tokenizers[0]);
           }
@@ -27,17 +30,11 @@ const App = () => {
     };
 
     fetchTokenizers();
+    console.log("tokenizers", selectedTokenizer)
   }, []);
 
-  const handleTextChange = (e) => {
-    setText(e.target.value);
-  };
-
-  const handleTokenizerChange = (e) => {
-    setSelectedTokenizer(e.target.value);
-  };
-
-  const handleSubmit = async () => {
+  const handleTokenization = async () => {
+    console.log("hello handleTokenization")
     try {
       const response = await fetch("http://localhost:8000/tokenize", {
         method: "POST",
@@ -49,7 +46,7 @@ const App = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setTokens(data.tokens);
+        setTokens(data.tokens ?? [""]);
       } else {
         console.error("Failed to tokenize text");
       }
@@ -57,6 +54,20 @@ const App = () => {
       console.error("Error:", error);
     }
   };
+
+  useEffect(() => {
+    console.log("use effect handleTokenization")
+    handleTokenization()
+  }, [text])
+
+  const handleTextChange = (e: any) => {
+    setText(e.target.value);
+  };
+
+  const handleTokenizerChange = (e: any) => {
+    setSelectedTokenizer(e.target.value);
+  };
+
 
   return (
     <div style={{ padding: "20px" }}>
@@ -72,6 +83,7 @@ const App = () => {
         </select>
       </label>
       <br/>
+      <br/>
       <textarea
         value={text}
         onChange={handleTextChange}
@@ -81,7 +93,7 @@ const App = () => {
         style={{ marginBottom: "20px" }}
       />
       <br/><br/>
-      <button onClick={handleSubmit}>Tokenize</button>
+      {/* <button onClick={handleTokenization}>Tokenize</button> */}
       <div>
         <h2>Tokens:</h2>
         <textarea
