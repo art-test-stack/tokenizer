@@ -1,3 +1,4 @@
+from models.basetokenizer import BaseTokenizer
 from models.bpe.utils import *
 from utils.settings import *
 
@@ -7,21 +8,21 @@ from pathlib import Path
 from tqdm import tqdm
 
 
-class Tokenizer:
+class BPETokenizer(BaseTokenizer):
 
-    def __init__(self, pattern: str = TOKEN_SPLIT_PATTERN, special_tokens: List[str] = CONTROL_TOKENS_LIST):
+    def __init__(self, split_pattern: str = TOKEN_SPLIT_PATTERN, special_tokens: List[str] = CONTROL_TOKENS_LIST):
         self.merges = {} 
         self.pattern = "" 
         self.special_tokens = {} 
         self.vocab = self._build_vocab()
 
-        self.pattern = pattern
-        self.compiled_pattern = re.compile(self.pattern)
+        self.split_pattern = split_pattern
+        self.compiled_pattern = re.compile(self.split_pattern)
         self.special_tokens = {}
         self.inverse_special_tokens = {}
 
 
-    def train(self, text: List[str] | str, vocab_size: int = VOCAB_SIZE, verbose: bool = True):
+    def create(self, text: List[str] | str, vocab_size: int = VOCAB_SIZE, verbose: bool = True):
         assert vocab_size >= 256
         if verbose:
             print("Start tokenizer training")
@@ -135,7 +136,7 @@ class Tokenizer:
         return vocab
 
 
-    def save(self, file_prefix: Path = VOCAB_FILE):
+    def save(self, file_prefix: Path = DATA_FOLDER):
 
         model_file = file_prefix / ".model"
         with open(model_file, 'w') as f:
@@ -171,7 +172,7 @@ class Tokenizer:
                     # (this should just be the first 256 tokens, the bytes)
                     f.write(f"[{s}] {idx}\n")
 
-    def load(self, model_file: Path = VOCAB_FILE):
+    def load(self, model_file: Path = DATA_FOLDER):
         assert str(model_file).endswith(".model")
 
         merges = {}

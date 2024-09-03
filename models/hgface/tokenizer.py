@@ -1,3 +1,4 @@
+from models.basetokenizer import BaseTokenizer
 import models.pretokenizer as pretk
 from utils.clean import *
 from utils.utils import *
@@ -19,29 +20,31 @@ from typing import Dict, List
 from tqdm import tqdm
 from copy import copy
 
-class Tokenizer:
+class HGFBPETokenizer(BaseTokenizer):
 
     def __init__(
             self, 
             split_pattern: str = TOKEN_SPLIT_PATTERN, 
-            file: Path = DATA_FOLDER,
+            directory: Path = DATA_FOLDER,
+            vocab_dir: Path = VOCAB_FILE,
+            model_dir: Path = DATA_FOLDER.joinpath("trainer.pkl"),
             special_tokens: List[str] | str = CONTROL_TOKENS_LIST
         ) -> None:
-        
+        self.__init__()
         self.to_index: Dict[str, int] = {}
         self.to_token: Dict[int, str] = {}
         self.control_tokens: List[str] = special_tokens
         
         self.special_tokens: Dict[int, str] = {}
 
-        self.file: Path = file
-        if file.joinpath('vocab.json').exists():
+        self.directory: Path = directory
+        if directory.joinpath('vocab.json').exists():
             self.load_vocab()
         # else:
         #     self.create()
         #     save_text_array(self.vocab, file.joinpath('vocab.txt'))
 
-        if file.joinpath('trainer.pt').exists():
+        if directory.joinpath('trainer.pt').exists():
             self.load_trainer()
         else:
             self.trainer: Trainer = BpeTrainer(
@@ -164,23 +167,23 @@ class Tokenizer:
 
 
     def save_vocab(self):
-        with open(self.file.joinpath('vocab.json'), 'w') as vf:
+        with open(self.directory.joinpath('vocab.json'), 'w') as vf:
             json.dump(self.to_token, vf)
 
 
     def load_vocab(self):
-        with open(self.file.joinpath('vocab.json'), 'rb') as vf:
+        with open(self.directory.joinpath('vocab.json'), 'rb') as vf:
             self.to_token = json.load(vf)
             self.to_index = {v: k for k, v in self.to_token.items()}
 
 
     def save_trainer(self):
-        with open(self.file.joinpath('trainer.pkl'), 'wb') as file:
-            pickle.dump(self.trainer, file)
+        with open(self.directory.joinpath('trainer.pkl'), 'wb') as directory:
+            pickle.dump(self.trainer, directory)
 
 
     def load_trainer(self):
-        self.trainer = pickle.load(self.file.joinpath('trainer.pkl'), 'rb')
+        self.trainer = pickle.load(self.directory.joinpath('trainer.pkl'), 'rb')
 
 
     def encode(
