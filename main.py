@@ -17,14 +17,14 @@ tokenizers = {
         split_pattern=TOKEN_SPLIT_PATTERN, 
         directory=DATA_FOLDER.joinpath("custom_bpe"),
         vocab_file=Path("vocab.json"),
-        special_tokens=CONTROL_TOKENS
+        special_tokens=CONTROL_TOKENS_LIST
     ),
     "hgface_bpe": HGFBPETokenizer(
         split_pattern=TOKEN_SPLIT_PATTERN, 
         directory=DATA_FOLDER.joinpath("hgface_bpe"),
         vocab_file=Path("vocab.json"),
         model_file=Path("trainer.pkl"),
-        special_tokens=CONTROL_TOKENS
+        special_tokens=CONTROL_TOKENS_LIST
     ),
     # "tiktoken": TikTokenizer, # special
 }
@@ -49,7 +49,7 @@ class Text2Encode(BaseModel):
 @app.get("/tokenizers")
 async def get_tokenizers():
     tknzrs = list(tokenizers.keys())
-    return {"tokenizers": tokenizers}
+    return {"tokenizers": tknzrs}
 
 @app.post("/tokenize")
 async def tokenize_text(data: Text2Encode):

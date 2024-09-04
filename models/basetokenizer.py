@@ -29,7 +29,7 @@ class BaseTokenizer:
         self.directory: Path = directory
         if directory.joinpath(vocab_file).exists():
             self.load_vocab()
-        self._add_special_tokens_to_vocab(special_tokens=special_tokens if type(special_tokens)==list else [special_tokens])
+        # self._add_special_tokens_to_vocab(special_tokens=special_tokens if type(special_tokens)==list else [special_tokens])
         
         self.split_pattern = split_pattern
 
@@ -50,5 +50,5 @@ class BaseTokenizer:
     def decode(self):
         NotImplementedError()
 
-    def _add_special_tokens_to_vocab(self):
-        NotImplementedError()
+    # def _add_special_tokens_to_vocab(self):
+    #     NotImplementedError()
