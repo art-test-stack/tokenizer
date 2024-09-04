@@ -66,7 +66,7 @@
 
 ||Backend|Frontend|
 |-|-|-|
-|Server|[![Python][Python]][Python-url][![FastAPI][FastAPI]][FastAPI-url]|[![TypeScript][TypeScript]][TypeScript-url][![NodeJS][NodeJS]][NodeJS-url]
+|Server|[![Python][Python]][Python-url][![FastAPI][FastAPI]][FastAPI-url]|[![TypeScript][TypeScript]][TypeScript-url][![NextJS][NextJS]][NextJS-url]
 |Libraries/Frameworks|[![Tqdm][Tqdm]][Tqdm-url][![Regex][Regex]][Regex-url]|[![React][React]][React-url]|
 |Tokenizers|[![HuggingFace][HuggingFace]][HuggingFace-url][![Tiktoken][Tiktoken]][Tiktoken-url]|
 
@@ -185,6 +185,8 @@ Project Link: [https://github.com/art-test-stack/tokenizer](https://github.com/a
 [TypeScript-url]: https://www.typescriptlang.org/
 [NodeJS]: https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white
 [NodeJS-url]: https://nodejs.org/en
+[NextJS]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
+[NextJS-url]: https://nextjs.org/
 [FastAPI]: https://img.shields.io/badge/fastapi-%23013243.svg?style=for-the-badge&logo=fastapi&logoColor=white
 [FastAPI-url]: https://fastapi.tiangolo.com/
 [HuggingFace]: https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-white?style=for-the-badge
