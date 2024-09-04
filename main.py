@@ -53,13 +53,19 @@ async def get_tokenizers():
 
 @app.post("/tokenize")
 async def tokenize_text(data: Text2Encode):
-    tokenizer_name, text = data.tokenizer if data.tokenizer else "bpe", data.text
+    tokenizer_name, text = data.tokenizer if data.tokenizer else "hgface_bpe", data.text
+    if len(text) == 0:
+        return {"tokens": [""], "words": [""]}  
     tokenizer: BaseTokenizer = tokenizers.get(tokenizer_name) # TODO: handdle parameters automatically here
     if not tokenizer:
         return {"error": "tokenizer not implemented"}
     
-    encoded = tokenizer.encode(text)
-    return {"tokens": encoded}
+    encoded = tokenizer.encode(text, retrieve_splitted_text=True, verbose=False)
+    if type(encoded[0]) == int:
+        words = [""]
+    else:
+        words, encoded = zip(*encoded)
+    return {"tokens": encoded, "words": words}
 
 if __name__ == "__main__":
     import uvicorn

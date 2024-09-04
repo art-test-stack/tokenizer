@@ -126,7 +126,13 @@ class BPETokenizer(BaseTokenizer):
         return ids
 
 
-    def encode(self, text, allowed_special="all"):
+    def encode(
+            self, 
+            text, 
+            allowed_special="all",
+            retrieve_splitted_text: bool = False,
+            verbose: bool = False
+        ):
         special = None
 
         if allowed_special == "all":

@@ -206,6 +206,7 @@ class HGFBPETokenizer(BaseTokenizer):
             text: str, 
             clean_text: bool = False,
             keep_control_tokens: bool = True,
+            retrieve_splitted_text: bool = False,
             verbose: bool = True
         ):
         if verbose:
@@ -222,7 +223,7 @@ class HGFBPETokenizer(BaseTokenizer):
 
         for token in tqdm(text_chunks, disable=not verbose):
             if token in self.to_index.keys():
-                output.append(self.to_index[token])
+                output.append(self.to_index[token]) if not retrieve_splitted_text else output.append((token, self.to_index[token]))
                 continue
             j = 0
             while j < len(token):
@@ -232,13 +233,13 @@ class HGFBPETokenizer(BaseTokenizer):
                     word = token[j:j + k + 1]
 
                     if word in self.to_index:
-                        output.append(self.to_index[word])
+                        output.append(self.to_index[word]) if not retrieve_splitted_text else output.append((word, self.to_index[word]))
                         j += k
                         found = True
                         break
 
                 if not found:
-                    output.append(self.to_index[CONTROL_TOKENS.unknown])
+                    output.append(self.to_index[CONTROL_TOKENS.unknown]) if not retrieve_splitted_text else output.append((token, self.to_index[CONTROL_TOKENS.unknown]))
                 j += 1
 
         return output

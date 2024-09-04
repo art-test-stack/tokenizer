@@ -10,6 +10,7 @@ import Head from "next/head"
 const App = () => {
   const [text, setText] = useState("");
   const [tokens, setTokens] = useState([""]);
+  const [words, setWords] = useState([""]);
   const [selectedTokenizer, setSelectedTokenizer] = useState("");
   const [tokenizers, setTokenizers] = useState([]);
 
@@ -37,11 +38,9 @@ const App = () => {
     };
 
     fetchTokenizers();
-    console.log("tokenizers", selectedTokenizer)
   }, []);
 
   const handleTokenization = async () => {
-    console.log("hello handleTokenization")
     try {
       const response = await fetch("http://localhost:8000/tokenize", {
         method: "POST",
@@ -54,6 +53,7 @@ const App = () => {
       if (response.ok) {
         const data = await response.json();
         setTokens(data.tokens ?? [""]);
+        setWords(data.words)
       } else {
         console.error("Failed to tokenize text");
       }
@@ -63,7 +63,6 @@ const App = () => {
   };
 
   useEffect(() => {
-    console.log("use effect handleTokenization")
     handleTokenization()
   }, [selectedTokenizer, text])
 
@@ -82,7 +81,7 @@ const App = () => {
         <title>Text Tokenizer</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="grid grid-cols-2 grid-flow-row gap-4">
+      <main className="grid grid-cols-2 grid-flow-row hover:place-content-center gap-4 m-20">
         <div className="item1">
           <p className="font-bold text-4xl">Text Tokenizer</p>
         </div>
@@ -98,27 +97,33 @@ const App = () => {
             </select>
           </label>
         </div>
-        <div className="item3">
+        <div className="c-50">
           <textarea
             value={text}
             onChange={handleTextChange}
             placeholder="Enter text to tokenize"
-            rows={4}
-            cols={50}
+            // rows={4}
+            // cols={50}
           />
         </div>
-        <div className={"item4"}>
-          <h2>Tokens:</h2>
+        <div className="place-content-stretch">
           <textarea
             value={`Token count \n${tokens.length}`}
             disabled={true}
-            cols={50}
+            // cols={50}
           />
+          <textarea
+            value={words.map((word) => word)}
+            disabled={true}
+            // rows={4}
+            // cols={50}
+          />
+          Tokens
           <textarea
             value={tokens.map((token) => token)}
             disabled={true}
-            rows={4}
-            cols={50}
+            // rows={4}
+            // cols={50}
           />
         </div>
       </main>
