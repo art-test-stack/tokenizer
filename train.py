@@ -8,6 +8,7 @@ from pathlib import Path
 import argparse
 
 
+
 def main():
     parser = argparse.ArgumentParser(
         prog='Tokenizer Trainer',
