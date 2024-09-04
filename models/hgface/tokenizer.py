@@ -27,6 +27,7 @@ class HGFBPETokenizer(BaseTokenizer):
             split_pattern: str = TOKEN_SPLIT_PATTERN, 
             directory: Path = DATA_FOLDER,
             vocab_file: Path = VOCAB_FILE,
+            vocab_size: int = VOCAB_SIZE,
             model_file: Path = Path("trainer.pkl"),
             special_tokens: List[str] | str = CONTROL_TOKENS_LIST
         ) -> None:
@@ -48,7 +49,7 @@ class HGFBPETokenizer(BaseTokenizer):
             self.load_trainer()
         else:
             self.trainer: Trainer = BpeTrainer(
-                vocab_size = VOCAB_SIZE,
+                vocab_size = vocab_size,
                 show_progress=True,
                 special_tokens=CONTROL_TOKENS_LIST
             )
@@ -71,6 +72,10 @@ class HGFBPETokenizer(BaseTokenizer):
         
         elif type == "none":
             return
+
+
+    def train(self, dataset, batch_size: int = 2048, verbose: bool = True) -> None:
+        self.create(dataset=dataset,batch_size=batch_size,verbose=verbose)
 
 
     def create(self, dataset, batch_size: int = 2048, verbose: bool = True) -> None:
@@ -107,7 +112,10 @@ class HGFBPETokenizer(BaseTokenizer):
                 try: 
                     yield dataset[i : i + batch_size]["text"]
                 except:
-                    yield dataset["text"][i : i + batch_size]
+                    try:
+                        yield dataset["text"][i : i + batch_size]
+                    except:
+                        yield dataset[i : i + batch_size]
 
         if verbose:
             print("Start training tokenizer...")
@@ -167,7 +175,10 @@ class HGFBPETokenizer(BaseTokenizer):
 
 
     def save_vocab(self):
-        with open(self.directory.joinpath(self.vocab_file), 'w') as vf:
+        dir = self.directory
+        if not dir.exists():
+            dir.mkdir()
+        with open(dir.joinpath(self.vocab_file), 'w') as vf:
             json.dump(self.to_token, vf)
 
 
@@ -178,7 +189,10 @@ class HGFBPETokenizer(BaseTokenizer):
 
 
     def save_trainer(self):
-        with open(self.directory.joinpath(self.model_file), 'wb') as directory:
+        dir = self.directory
+        if not dir.exists():
+            dir.mkdir()
+        with open(dir.joinpath(self.model_file), 'wb') as directory:
             pickle.dump(self.trainer, directory)
 
 

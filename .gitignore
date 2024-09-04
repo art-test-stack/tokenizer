@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+jobs
 /data/*
 !/data/README.md
 !/data/drive

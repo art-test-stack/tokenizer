@@ -37,23 +37,24 @@ def main():
     wikipedia_dataset = load_dataset("wikipedia", "20220301.en")
 
     wiki_set = wikipedia_dataset['train']
-    data_size = 1000 if tokenizer_name=="bpe_custom" else -1
+    data_size = 1000 if tokenizer_name=="bpe_custom" else 25_000
     set_for_train = [ text for text in wiki_set[:data_size]["text"]]
 
     tk: BaseTokenizer = available_tokenizers.get(tokenizer_name)(
         directory=dir_name.joinpath(tokenizer_name),
-        vocab_dir=vocab_file,
+        vocab_file=vocab_file,
         vocab_size=vocab_size
     )
     tk_params = {
         "directory": dir_name.joinpath(tokenizer_name),
-        "vocab_dir": vocab_file,
+        "vocab_file": vocab_file,
         "vocab_size": vocab_size
     }
-    tk.train(set_for_train, vocab_size=VOCAB_SIZE, verbose=False)
+    tk.train(set_for_train, verbose=False)
     # tk.register_special_tokens(CONTROL_TOKENS_LIST)
     # tk.save()
 
 
 if __name__ == "__main__":
     main()
+    print("Job's done")
