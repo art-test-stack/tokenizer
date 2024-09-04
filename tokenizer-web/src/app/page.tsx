@@ -1,4 +1,11 @@
+
+
+'use client'
 import React, { useEffect, useState } from "react";
+import Head from "next/head"
+// import './globals.css';
+// import { Main } from "next/document";
+
 
 const App = () => {
   const [text, setText] = useState("");
@@ -58,7 +65,7 @@ const App = () => {
   useEffect(() => {
     console.log("use effect handleTokenization")
     handleTokenization()
-  }, [text])
+  }, [selectedTokenizer, text])
 
   const handleTextChange = (e: any) => {
     setText(e.target.value);
@@ -70,41 +77,52 @@ const App = () => {
 
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Text Tokenizer</h1>
-      <label>
-        Choose Tokenizer: 
-        <select value={selectedTokenizer} onChange={handleTokenizerChange} style={{ marginLeft: "10px" }}>
-          {tokenizers.map((tokenizer, index) => (
-            <option key={index} value={tokenizer}>
-              {tokenizer}
-            </option>
-          ))}
-        </select>
-      </label>
-      <br/>
-      <br/>
-      <textarea
-        value={text}
-        onChange={handleTextChange}
-        placeholder="Enter text to tokenize"
-        rows={4}
-        cols={50}
-        style={{ marginBottom: "20px" }}
-      />
-      <br/><br/>
-      {/* <button onClick={handleTokenization}>Tokenize</button> */}
-      <div>
-        <h2>Tokens:</h2>
-        <textarea
-          value={tokens.map((token) => token)}
-          disabled={true}
-          rows={4}
-          cols={50}
-          style={{ marginBottom: "20px" }}
-        />
-      </div>
-    </div>
+    <>
+      <Head>
+        <title>Text Tokenizer</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main className="grid grid-cols-2 grid-flow-row gap-4">
+        <div className="item1">
+          <p className="font-bold text-4xl">Text Tokenizer</p>
+        </div>
+        <div className="item2">
+          <label >
+            Choose Tokenizer: 
+            <select value={selectedTokenizer} onChange={handleTokenizerChange} className="appearance-auto right"> 
+              {tokenizers.map((tokenizer, index) => (
+                <option key={index} value={tokenizer}>
+                  {tokenizer}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <div className="item3">
+          <textarea
+            value={text}
+            onChange={handleTextChange}
+            placeholder="Enter text to tokenize"
+            rows={4}
+            cols={50}
+          />
+        </div>
+        <div className={"item4"}>
+          <h2>Tokens:</h2>
+          <textarea
+            value={`Token count \n${tokens.length}`}
+            disabled={true}
+            cols={50}
+          />
+          <textarea
+            value={tokens.map((token) => token)}
+            disabled={true}
+            rows={4}
+            cols={50}
+          />
+        </div>
+      </main>
+    </>
   );
 };
 

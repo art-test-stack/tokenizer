@@ -7,7 +7,7 @@ jobs
 /data/*
 !/data/README.md
 !/data/drive
-
+archives
 # C extensions
 *.so
 
