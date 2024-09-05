@@ -16,7 +16,8 @@ class BPETokenizer(BaseTokenizer):
             split_pattern: str = TOKEN_SPLIT_PATTERN,
             directory: Path = DATA_FOLDER,
             vocab_file: Path = VOCAB_FILE,
-            special_tokens: List[str] | str = CONTROL_TOKENS_LIST
+            special_tokens: List[str] | str = CONTROL_TOKENS_LIST,
+            vocab_size: int = VOCAB_SIZE
         ) -> None:
         super().__init__(split_pattern, directory, vocab_file, special_tokens)
 
@@ -25,15 +26,15 @@ class BPETokenizer(BaseTokenizer):
         # self.special_tokens = {} 
         # self.vocab_file = vocab_file
         # self.vocab = self._build_vocab()
-
+        self.vocab_size = vocab_size
         self.split_pattern = split_pattern
         self.compiled_pattern = re.compile(self.split_pattern)
         self.special_tokens = {}
         self.inverse_special_tokens = {}
 
 
-    # def train(self):
-    #     self.create()
+    def train(self, text, verbose):
+        self.create(text, verbose)
     
     # def load_vocab(self):
     #     NotImplementedError()
@@ -50,11 +51,11 @@ class BPETokenizer(BaseTokenizer):
     # def _add_special_tokens_to_vocab(self):
     #     NotImplementedError()
 
-    def create(self, text: List[str] | str, vocab_size: int = VOCAB_SIZE, verbose: bool = True):
-        assert vocab_size >= 256
+    def create(self, text: List[str] | str, verbose: bool = True):
+        assert self.vocab_size >= 256
         if verbose:
             print("Start tokenizer training")
-        num_merges = vocab_size - 256
+        num_merges = self.vocab_size - 256
 
         text = " ".join(text) if type(text) == list else text
             

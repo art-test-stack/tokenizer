@@ -34,10 +34,10 @@ def main():
     print(f"Directory:", args.directory)
 
     print("Dataset:", "wikipedia --20220301.en")
-    wikipedia_dataset = load_dataset("wikipedia", "20220301.en")
+    wikipedia_dataset = load_dataset("wikipedia", "20220301.en", trust_remote_code=True)
 
     wiki_set = wikipedia_dataset['train']
-    data_size = 1000 if tokenizer_name=="bpe_custom" else 25_000
+    data_size = 1_000 if tokenizer_name=="bpe_custom" else 25_000
     set_for_train = [ text for text in wiki_set[:data_size]["text"]]
 
     tk: BaseTokenizer = available_tokenizers.get(tokenizer_name)(
