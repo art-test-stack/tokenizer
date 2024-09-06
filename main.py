@@ -55,7 +55,7 @@ async def get_tokenizers():
 async def tokenize_text(data: Text2Encode):
     tokenizer_name, text = data.tokenizer if data.tokenizer else "hgface_bpe", data.text
     if len(text) == 0:
-        return {"tokens": [""], "words": [""]}  
+        return {"tokens": [], "words": [""]}  
     tokenizer: BaseTokenizer = tokenizers.get(tokenizer_name) # TODO: handdle parameters automatically here
     if not tokenizer:
         return {"error": "tokenizer not implemented"}
