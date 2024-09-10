@@ -41,7 +41,7 @@ TIKTOKEN_MAX_ENCODE_CHARS = 400_000
 MAX_NO_WHITESPACES_CHARS = 25_000
 
 
-class TikTokenizer:
+class LlamaTokenizer:
     """
     Tokenizing and encoding/decoding text using the Tiktoken tokenizer.
     """

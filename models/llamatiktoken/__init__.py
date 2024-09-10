@@ -1,1 +1,1 @@
-from .tokenizer import TikTokenizer
+from .tokenizer import LlamaTokenizer
