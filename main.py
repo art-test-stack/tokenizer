@@ -12,6 +12,13 @@ from typing import List
 
 app = FastAPI()
 
+from src.openai.tokenizer import tiktoken_models
+
+openai_tokenizers = {
+    name: TikTokenizer(model_name=name, special_tokens = CONTROL_TOKENS_LIST)
+    for name in tiktoken_models
+}
+
 tokenizers = {
     "custom_bpe": BPETokenizer(
         split_pattern=TOKEN_SPLIT_PATTERN, 
@@ -28,6 +35,19 @@ tokenizers = {
     ),
     # "tiktoken": TikTokenizer, # special
 }
+
+tokenizer_choices = [
+    {
+        "label": "custom",
+        "options": list(tokenizers.keys()),
+    },
+    {
+        "label": "openai",
+        "options": list(openai_tokenizers.keys()),
+    }
+]
+
+tokenizers = tokenizers | openai_tokenizers
 
 app.add_middleware(
     CORSMiddleware,
@@ -46,20 +66,24 @@ class Text2Encode(BaseModel):
     tokenizer: str | None
     text: str
 
+# @app.get("/tokenizers")
+# async def get_tokenizers():
+#     tknzrs = list(tokenizers.keys())
+#     return {"tokenizers": tknzrs}
+
 @app.get("/tokenizers")
 async def get_tokenizers():
-    tknzrs = list(tokenizers.keys())
-    return {"tokenizers": tknzrs}
+    return tokenizer_choices
 
 @app.post("/tokenize")
 async def tokenize_text(data: Text2Encode):
-    tokenizer_name, text = data.tokenizer if data.tokenizer else "hgface_bpe", data.text
+    tokenizer_name, text = data.tokenizer if data.tokenizer else "hgface_bpe", str(data.text)
     if len(text) == 0:
         return {"tokens": [], "words": [""]}  
     tokenizer: BaseTokenizer = tokenizers.get(tokenizer_name) # TODO: handdle parameters automatically here
     if not tokenizer:
         return {"error": "tokenizer not implemented"}
-    
+    print(tokenizer)
     encoded = tokenizer.encode(text, retrieve_splitted_text=True, verbose=False)
     if type(encoded[0]) == int:
         words = [""]

@@ -8,6 +8,8 @@ jobs
 !/models/README.md
 !/models/drive
 archives
+*.ipynb
+
 # C extensions
 *.so
 
