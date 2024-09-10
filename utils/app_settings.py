@@ -1,4 +1,4 @@
-from models import BPETokenizer, HGFBPETokenizer, TikTokenizer
+from src import BPETokenizer, HGFBPETokenizer, TikTokenizer
 
 available_tokenizers = {
     "custom_bpe": BPETokenizer,

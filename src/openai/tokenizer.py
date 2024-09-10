@@ -1,6 +1,6 @@
 from pathlib import Path
 from typing import List
-from models.basetokenizer import BaseTokenizer
+from src.basetokenizer import BaseTokenizer
 from utils.settings import CONTROL_TOKENS_LIST, DATA_FOLDER, TOKEN_SPLIT_PATTERN, VOCAB_FILE
 
 tiktoken_models = [

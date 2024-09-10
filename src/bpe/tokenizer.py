@@ -1,5 +1,5 @@
-from models.basetokenizer import BaseTokenizer
-from models.bpe.utils import *
+from src.basetokenizer import BaseTokenizer
+from src.bpe.utils import *
 from utils.settings import *
 
 import regex as re

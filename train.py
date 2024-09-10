@@ -1,4 +1,4 @@
-from models import BaseTokenizer
+from src import BaseTokenizer
 from utils.app_settings import available_tokenizers
 from utils.settings import *
 

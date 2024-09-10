@@ -1,6 +1,6 @@
-from models import BaseTokenizer
+from src import BaseTokenizer
 # from utils.app_settings import available_tokenizers
-from models import BPETokenizer, HGFBPETokenizer, TikTokenizer
+from src import BPETokenizer, HGFBPETokenizer, TikTokenizer
 
 from utils.settings import *
 

@@ -1,4 +1,4 @@
-from models.bpe import BPETokenizer
+from src.bpe import BPETokenizer
 from .hgface import HGFBPETokenizer
 from .llamatiktoken import LlamaTokenizer
 

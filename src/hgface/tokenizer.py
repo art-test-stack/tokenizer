@@ -1,5 +1,5 @@
-from models.basetokenizer import BaseTokenizer
-import models.pretokenizer as pretk
+from src.basetokenizer import BaseTokenizer
+import src.pretokenizer as pretk
 from utils.clean import *
 from utils.settings import TOKEN_SPLIT_PATTERN
 from utils.utils import *
