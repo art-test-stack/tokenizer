@@ -1,10 +1,16 @@
-import { createContext, useContext } from "react";
+import { createContext, useState, ReactNode } from "react";
 
+export const CurrentTokensContext = createContext({
+  tokens: [""],
+  setTokens: (tokens: string[]) => {},
+});
 
-export const currentTokens = createContext([""])
+export const CurrentTokensProvider = ({ children }: { children: ReactNode }) => {
+  const [tokens, setTokens] = useState<string[]>([""]);
 
-export const currentTokensProvider = ({ children }: { children: any }) => {
-    const [tokens, setTokens] = useContext(currentTokens)
-
-    return <currentTokens.Provider value={tokens}>{children}</currentTokens.Provider>
-}
+  return (
+    <CurrentTokensContext.Provider value={{ tokens, setTokens }}>
+      {children}
+    </CurrentTokensContext.Provider>
+  );
+};

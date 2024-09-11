@@ -1,10 +1,16 @@
-import { createContext, useContext } from "react";
+import { createContext, useState, ReactNode } from "react";
 
+export const CurrentWordsContext = createContext({
+  words: [""],
+  setWords: (words: string[]) => {},
+});
 
-export const currentWords = createContext([""])
+export const CurrentWordsProvider = ({ children }: { children: ReactNode }) => {
+  const [words, setWords] = useState<string[]>([""]);
 
-export const currentWordsProvider = ({ children }: { children: any }) => {
-    const [words, setWords] = useContext(currentWords)
-
-    return <currentWords.Provider value={words}>{children}</currentWords.Provider>
-}
+  return (
+    <CurrentWordsContext.Provider value={{ words, setWords }}>
+      {children}
+    </CurrentWordsContext.Provider>
+  );
+};

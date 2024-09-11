@@ -6,11 +6,20 @@ export interface TokenizerOption {
     options: string[]
   }
   
-export const currentTokenizerOptions = createContext([])
+// export const CurrentTokenizerOptionsContext = createContext({
+//     tokenizers: [{label: "", options: [""]}],
+//     setTokenizers: (tokenizers: TokenizerOption[]) => {},
+// })
+  
+export const CurrentTokenizerOptionsContext = createContext({
+    tokenizers: [{label: "", options: [""]}],
+    selectedTokenizer: "",
+    setSelectedTokenizer: ( tokenizer: string ) => {}
+})
 
 export const CurrentTokenizerOptionsProvider = ({ children }: { children: any }) => {
-  const [tokenizers, setTokenizers] = useState([]);
-//   const [selectedTokenizer, setSelectedTokenizer] = useState("");
+  const [tokenizers, setTokenizers] = useState([{label: "", options: [""]}]);
+    const [selectedTokenizer, setSelectedTokenizer] = useState("");
 
   useEffect(() => {
     const fetchTokenizers = async () => {
@@ -21,7 +30,7 @@ export const CurrentTokenizerOptionsProvider = ({ children }: { children: any })
         //   console.log("data", data)
           setTokenizers(data);
           if (data.length > 0) {
-            // setSelectedTokenizer(data[0].options[0]);
+            setSelectedTokenizer(data[0].options[0]);
           }
         } else {
           console.error("Failed to fetch tokenizers");
@@ -33,6 +42,12 @@ export const CurrentTokenizerOptionsProvider = ({ children }: { children: any })
 
     fetchTokenizers();
   }, []);
-  console.log("provider result", tokenizers)
-  return <currentTokenizerOptions.Provider value={tokenizers}>{children}</currentTokenizerOptions.Provider>
-}
+  console.log("tokenizers ->", tokenizers)
+  return (
+    <CurrentTokenizerOptionsContext.Provider 
+        // value={{tokenizers, setTokenizers}}
+        value={{tokenizers, selectedTokenizer, setSelectedTokenizer}}
+    >
+        {children}
+    </CurrentTokenizerOptionsContext.Provider>
+)}

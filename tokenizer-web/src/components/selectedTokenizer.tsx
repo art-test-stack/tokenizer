@@ -1,11 +1,15 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { currentTokenizerOptions } from "./currentTokenizerOptions";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { CurrentTokenizerOptionsContext } from "./currentTokenizerOptions";
 
-export const currentSelectedTokenizer = createContext("")
 
-export const CurrentSelectedTokenizerProvider = ({ children }: { children: any }) => {
+export const CurrentSelectedTokenizerContext = createContext({
+    selectedTokenizer: "",
+    setSelectedTokenizer: (words: string) => {},
+});
+
+export const CurrentSelectedTokenizerProvider = ({ children }: { children: ReactNode }) => {
 //   const [tokenizers, setTokenizers] = useState([]);
-    const [tokenizers, setTokenizers] = useContext(currentTokenizerOptions)
+    const tokenizers = useContext(CurrentTokenizerOptionsContext)
     const [selectedTokenizer, setSelectedTokenizer] = useState("");
 
 //   useEffect(() => {
@@ -29,7 +33,12 @@ export const CurrentSelectedTokenizerProvider = ({ children }: { children: any }
 
 //     fetchTokenizers();
 //   }, []);
-    setSelectedTokenizer(tokenizers[0]?.options[0])
+console.log("tokenizer list->", tokenizers)
+console.log("selected tokenizer->", selectedTokenizer)
+    if (selectedTokenizer == ""){
+        setSelectedTokenizer(tokenizers[0]?.options[0])
+    }
+    
   console.log("provider result", selectedTokenizer)
-  return <currentSelectedTokenizer.Provider value={selectedTokenizer}>{children}</currentSelectedTokenizer.Provider>
+  return <CurrentSelectedTokenizerContext.Provider value={{selectedTokenizer, setSelectedTokenizer}}>{children}</CurrentSelectedTokenizerContext.Provider>
 }

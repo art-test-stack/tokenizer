@@ -1,15 +1,15 @@
 import { useContext, useEffect, useState } from "react";
-import { currentTokens } from "./currentTokens";
-import { currentWords } from "./currentWords";
-import { currentSelectedTokenizer } from "./selectedTokenizer";
+import { CurrentTokensContext } from "./currentTokens";
+import { CurrentWordsContext } from "./currentWords";
+import { CurrentSelectedTokenizerContext } from "./selectedTokenizer";
 
 
 export const TextToToken = () => {
     const [text, setText] = useState("");
 
-    const [selectedTokenizer, setSelectedTokenizer] = useContext(currentSelectedTokenizer)
-    const [tokens, setTokens] = useContext(currentTokens);
-    const [words, setWords] = useContext(currentWords);
+    const selectedTokenizer = useContext(CurrentSelectedTokenizerContext)
+    const { tokens, setTokens } = useContext(CurrentTokensContext);
+    const { words, setWords } = useContext(CurrentWordsContext);
 
     const handleTokenization = async () => {
         try {
@@ -32,8 +32,9 @@ export const TextToToken = () => {
           console.error("Error:", error);
         }
       };
-      
+
     const handleTextChange = (e: any) => {
+        console.log("e.target.text", e.target.text)
         setText(e.target.value);
     };
 
@@ -43,13 +44,13 @@ export const TextToToken = () => {
 
     return (
         <div className="c-50">
-        <textarea
-            value={text}
-            onChange={handleTextChange}
-            placeholder="Enter text to tokenize"
-            // rows={4}
-            // cols={50}
-        />
+            <textarea
+                value={text}
+                onChange={handleTextChange}
+                placeholder="Enter text to tokenize"
+                // rows={4}
+                // cols={50}
+            />
         </div>
     )
 }

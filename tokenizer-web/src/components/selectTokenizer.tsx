@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 
 import Select, { components, MenuListProps } from 'react-select';
 import ReactLoading from 'react-loading';
-import { currentTokenizerOptions } from './currentTokenizerOptions';
-import { currentSelectedTokenizer } from './selectedTokenizer';
+import { CurrentTokenizerOptionsContext } from './currentTokenizerOptions';
+import { CurrentSelectedTokenizerContext } from './selectedTokenizer';
 // import { CurrentTokenizerOptionsProvider } from '@/app/page';
 
 export interface TokenizerOption {
@@ -20,6 +20,7 @@ const menuHeaderStyle = {
 const MenuList = (
   props: MenuListProps<string>
 ) => {
+  console.log("props:", props)
   return (
     <components.MenuList {...props}>
       <div style={menuHeaderStyle}>Custom Menu List</div>
@@ -29,17 +30,19 @@ const MenuList = (
 };
 
 export const SelectTokenizer = ( ) => {
-  // export const SelectTokenizer = ( tokenizers: TokenizerOption[] ) => {
-  // console.log('data here', tokenizers);
-  
-  const [tokenizers, setTokenizers] = useContext(currentTokenizerOptions);
-  const [selectedTokenizer, setSelectedTokenizer] = useContext(currentSelectedTokenizer);
+  // const tokenizers = useContext(CurrentTokenizerOptionsContext);
+  const { tokenizers, selectedTokenizer, setSelectedTokenizer } = useContext(
+    // CurrentSelectedTokenizerContext
+    CurrentTokenizerOptionsContext
+  );
   
   const handleTokenizerChange = (e: any) => {
+    console.log("handleTokenizerChange", e.target.value)
     setSelectedTokenizer(e.target.value);
   };
-  // console.log("select tokenizer:", tokenizers)
-  if (tokenizers === undefined){return <ReactLoading/>}
+  console.log("tokenizers:", tokenizers)
+  console.log("selected tokenizer:", selectedTokenizer)
+  if (tokenizers[0].label == ""){return <ReactLoading/>}
   return <Select<string, false>
     defaultValue={selectedTokenizer}
     options={tokenizers}
