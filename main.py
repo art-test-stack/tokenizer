@@ -73,6 +73,7 @@ class Text2Encode(BaseModel):
 
 @app.get("/tokenizers")
 async def get_tokenizers():
+    print("tokenizer choices:", tokenizer_choices)
     return tokenizer_choices
 
 @app.post("/tokenize")

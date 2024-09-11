@@ -1,8 +1,10 @@
 
 
 'use client'
-import React, { useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import Head from "next/head"
+import { SelectTokenizer, TokenizerOption } from "@/components/selectTokenizer";
+import { currentTokenizerOptions, CurrentTokenizerOptionsProvider } from "@/components/currentTokenizerOptions";
 // import './globals.css';
 // import { Main } from "next/document";
 
@@ -12,69 +14,68 @@ const App = () => {
   const [tokens, setTokens] = useState([""]);
   const [words, setWords] = useState([""]);
   const [selectedTokenizer, setSelectedTokenizer] = useState("");
-  const [tokenizers, setTokenizers] = useState([]);
+  // const [tokenizers, setTokenizers] = useState([]);
 
-  console.log("text", text)
-  console.log("tokens", tokens)
-  console.log("selectedTokenizer", selectedTokenizer)
-  console.log("tokenizers", tokenizers)
+  const [tokenizers, setTokenizers] = useContext(currentTokenizerOptions);
+  // useEffect(() => {
+  //   const fetchTokenizers = async () => {
+  //     try {
+  //       const response = await fetch("http://localhost:8000/tokenizers");
+  //       if (response) {
+  //         const data = await response.json();
+  //         console.log("data", data)
+  //         setTokenizers(data);
+  //         if (data.length > 0) {
+  //           console.log(data[0].options[0])
 
-  useEffect(() => {
-    const fetchTokenizers = async () => {
-      try {
-        const response = await fetch("http://localhost:8000/tokenizers");
-        if (response) {
-          const data = await response.json();
-          setTokenizers(data.tokenizers);
-          if (data.tokenizers.length > 0) {
-            setSelectedTokenizer(data.tokenizers[0]);
-          }
-        } else {
-          console.error("Failed to fetch tokenizers");
-        }
-      } catch (error) {
-        console.error("Error fetching tokenizers:", error);
-      }
-    };
+  //           setSelectedTokenizer(data[0].options[0]);
+  //         }
+  //       } else {
+  //         console.error("Failed to fetch tokenizers");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching tokenizers:", error);
+  //     }
+  //   };
 
-    fetchTokenizers();
-  }, []);
+  //   fetchTokenizers();
+  // }, []);
 
-  const handleTokenization = async () => {
-    try {
-      const response = await fetch("http://localhost:8000/tokenize", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ text, tokenizer: selectedTokenizer }),
-      });
+  // const handleTokenization = async () => {
+  //   try {
+  //     const response = await fetch("http://localhost:8000/tokenize", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ text, tokenizer: selectedTokenizer }),
+  //     });
 
-      if (response.ok) {
-        const data = await response.json();
-        setTokens(data.tokens ?? [""]);
-        setWords(data.words)
-      } else {
-        console.error("Failed to tokenize text");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       setTokens(data.tokens ?? [""]);
+  //       setWords(data.words)
+  //     } else {
+  //       console.error("Failed to tokenize text");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   }
+  // };
 
-  useEffect(() => {
-    handleTokenization()
-  }, [selectedTokenizer, text])
+  // useEffect(() => {
+  //   handleTokenization()
+  // }, [selectedTokenizer, text])
 
   const handleTextChange = (e: any) => {
     setText(e.target.value);
   };
 
-  const handleTokenizerChange = (e: any) => {
-    setSelectedTokenizer(e.target.value);
-  };
-
-
+  // const handleTokenizerChange = (e: any) => {
+  //   setSelectedTokenizer(e.target.value);
+  // };
+  console.log("main provider result", tokenizers)
+  // console.log("tokenizers", tokenizers)
   return (
     <>
       <Head>
@@ -88,13 +89,17 @@ const App = () => {
         <div className="item2">
           <label >
             Choose Tokenizer: 
-            <select value={selectedTokenizer} onChange={handleTokenizerChange} className="appearance-auto right"> 
+            {/* <select value={selectedTokenizer} onChange={handleTokenizerChange} className="appearance-auto right"> 
               {tokenizers.map((tokenizer, index) => (
                 <option key={index} value={tokenizer}>
                   {tokenizer}
                 </option>
               ))}
-            </select>
+            </select> */}
+            <CurrentTokenizerOptionsProvider>
+              <SelectTokenizer/>
+              {/* <SelectTokenizer tokenizers={tokenizers}/> */}
+            </CurrentTokenizerOptionsProvider>
           </label>
         </div>
         <div className="c-50">
