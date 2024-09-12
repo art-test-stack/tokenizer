@@ -1,13 +1,15 @@
 import { useContext, useEffect, useState } from "react";
 import { CurrentTokensContext } from "./currentTokens";
 import { CurrentWordsContext } from "./currentWords";
-import { CurrentSelectedTokenizerContext } from "./selectedTokenizer";
+import { CurrentTokenizerOptionsContext } from "./currentTokenizerOptions";
 
 
 export const TextToToken = () => {
     const [text, setText] = useState("");
 
-    const selectedTokenizer = useContext(CurrentSelectedTokenizerContext)
+    const { selectedTokenizer } = useContext(
+        CurrentTokenizerOptionsContext
+    );
     const { tokens, setTokens } = useContext(CurrentTokensContext);
     const { words, setWords } = useContext(CurrentWordsContext);
 
@@ -34,7 +36,6 @@ export const TextToToken = () => {
       };
 
     const handleTextChange = (e: any) => {
-        console.log("e.target.text", e.target.text)
         setText(e.target.value);
     };
 
@@ -48,8 +49,8 @@ export const TextToToken = () => {
                 value={text}
                 onChange={handleTextChange}
                 placeholder="Enter text to tokenize"
-                // rows={4}
-                // cols={50}
+                rows={4}
+                cols={50}
             />
         </div>
     )

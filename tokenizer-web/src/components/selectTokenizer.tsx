@@ -8,7 +8,6 @@ const menuHeaderStyle = {
   color: 'white',
 };
 
-// Modified MenuList to show the grouped TokenizerOption and render the TokenizerValue items for selection.
 const MenuList = (
   props: MenuListProps<TokenizerValue, false, GroupBase<TokenizerOption>>
 ) => (
