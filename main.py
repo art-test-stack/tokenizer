@@ -36,14 +36,14 @@ tokenizers = {
     # "tiktoken": TikTokenizer, # special
 }
 
-tokenizer_choices = [
+tokenizer_options = [
     {
         "label": "custom",
-        "options": list(tokenizers.keys()),
+        "options": [{ "value": tok } for tok in list(tokenizers.keys())],
     },
     {
         "label": "openai",
-        "options": list(openai_tokenizers.keys()),
+        "options": [{ "value": tok } for tok in list(openai_tokenizers.keys())],
     }
 ]
 
@@ -73,7 +73,9 @@ class Text2Encode(BaseModel):
 
 @app.get("/tokenizers")
 async def get_tokenizers():
-    return tokenizer_choices
+    print("tokenizer choices:", len(tokenizer_options[0]["options"]), len(tokenizer_options[1]["options"]))
+    print("tokenizer choice 0:", tokenizer_options[0]["options"])
+    return tokenizer_options
 
 @app.post("/tokenize")
 async def tokenize_text(data: Text2Encode):

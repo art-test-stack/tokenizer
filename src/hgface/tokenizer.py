@@ -54,7 +54,9 @@ class HGFBPETokenizer(BaseTokenizer):
                 special_tokens=CONTROL_TOKENS_LIST
             )
             self.save_trainer()
-        self._add_special_tokens_to_vocab(special_tokens=special_tokens if type(special_tokens)==list else [special_tokens])
+        self._add_special_tokens_to_vocab(
+            special_tokens=special_tokens if type(special_tokens)==list else [special_tokens]
+        )
         self.split_pattern = split_pattern
         self.compiled_pattern = pretk.regex_pattern(self.split_pattern, special_tokens=self.control_tokens)
 
