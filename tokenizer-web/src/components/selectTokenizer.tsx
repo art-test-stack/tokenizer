@@ -1,52 +1,55 @@
 import React, { useContext } from 'react';
-
-import Select, { components, MenuListProps } from 'react-select';
+import Select, { components, MenuListProps, GroupBase } from 'react-select';
 import ReactLoading from 'react-loading';
-import { CurrentTokenizerOptionsContext } from './currentTokenizerOptions';
-import { CurrentSelectedTokenizerContext } from './selectedTokenizer';
-// import { CurrentTokenizerOptionsProvider } from '@/app/page';
-
-export interface TokenizerOption {
-  label: string,
-  options: string[]
-}
+import { CurrentTokenizerOptionsContext, TokenizerOption, TokenizerValue } from './currentTokenizerOptions';
 
 const menuHeaderStyle = {
   padding: '8px 12px',
-  // background: colourOptions[2].color,
   color: 'white',
 };
 
+// Modified MenuList to show the grouped TokenizerOption and render the TokenizerValue items for selection.
 const MenuList = (
-  props: MenuListProps<string>
-) => {
-  console.log("props:", props)
+  props: MenuListProps<TokenizerValue, false, GroupBase<TokenizerOption>>
+) => (
+  <components.MenuList {...props}>
+    {props.children}
+  </components.MenuList>
+);
+
+export const SelectTokenizer = () => {
+  const { tokenizers, selectedTokenizer, setSelectedTokenizer } = useContext(
+    CurrentTokenizerOptionsContext
+  );
+
+  const handleTokenizerChange = (selectedOption: TokenizerValue | null) => {
+    if (selectedOption) {
+      setSelectedTokenizer(selectedOption.value);
+    }
+  };
+  if (tokenizers[0].label === "") {
+    return <ReactLoading />;
+  }
+
+  const groupedOptions = tokenizers.map((tokenizer) => ({
+    label: tokenizer.label,
+    options: tokenizer.options,
+  }));
+
+  const selectedOption = tokenizers
+    .flatMap((tokenizer) => tokenizer.options)
+    .find((option) => option.value === selectedTokenizer) || null;
+
   return (
-    <components.MenuList {...props}>
-      <div style={menuHeaderStyle}>Custom Menu List</div>
-      {props.children}
-    </components.MenuList>
+    <Select<TokenizerValue, false, GroupBase<TokenizerOption>>
+      defaultValue={selectedOption}
+      options={groupedOptions}
+      components={{ MenuList }}
+      getOptionLabel={(option) => option.value}
+      getOptionValue={(option) => option.value} 
+      onChange={handleTokenizerChange}
+      isSearchable={true}
+    />
   );
 };
 
-export const SelectTokenizer = ( ) => {
-  // const tokenizers = useContext(CurrentTokenizerOptionsContext);
-  const { tokenizers, selectedTokenizer, setSelectedTokenizer } = useContext(
-    // CurrentSelectedTokenizerContext
-    CurrentTokenizerOptionsContext
-  );
-  
-  const handleTokenizerChange = (e: any) => {
-    console.log("handleTokenizerChange", e.target.value)
-    setSelectedTokenizer(e.target.value);
-  };
-  console.log("tokenizers:", tokenizers)
-  console.log("selected tokenizer:", selectedTokenizer)
-  if (tokenizers[0].label == ""){return <ReactLoading/>}
-  return <Select<string, false>
-    defaultValue={selectedTokenizer}
-    options={tokenizers}
-    components={{ MenuList }}
-    onChange={handleTokenizerChange}
-  />
-};

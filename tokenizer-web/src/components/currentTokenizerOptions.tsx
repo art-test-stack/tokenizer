@@ -1,10 +1,13 @@
 import { createContext, useEffect, useState } from "react";
 
+export interface TokenizerValue {
+    value: string
+}
 
 export interface TokenizerOption {
     label: string,
-    options: string[]
-  }
+    options: TokenizerValue[]
+}
   
 // export const CurrentTokenizerOptionsContext = createContext({
 //     tokenizers: [{label: "", options: [""]}],
@@ -12,13 +15,13 @@ export interface TokenizerOption {
 // })
   
 export const CurrentTokenizerOptionsContext = createContext({
-    tokenizers: [{label: "", options: [""]}],
+    tokenizers: [{label: "", options: [{value: ""},]},],
     selectedTokenizer: "",
     setSelectedTokenizer: ( tokenizer: string ) => {}
 })
 
 export const CurrentTokenizerOptionsProvider = ({ children }: { children: any }) => {
-  const [tokenizers, setTokenizers] = useState([{label: "", options: [""]}]);
+  const [tokenizers, setTokenizers] = useState([{label: "", options: [{value: ""},]},]);
     const [selectedTokenizer, setSelectedTokenizer] = useState("");
 
   useEffect(() => {
@@ -30,7 +33,8 @@ export const CurrentTokenizerOptionsProvider = ({ children }: { children: any })
         //   console.log("data", data)
           setTokenizers(data);
           if (data.length > 0) {
-            setSelectedTokenizer(data[0].options[0]);
+            console.log("default tok ->", data[0].options[0].value)
+            setSelectedTokenizer(data[0].options[0].value);
           }
         } else {
           console.error("Failed to fetch tokenizers");
