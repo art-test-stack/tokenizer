@@ -73,8 +73,6 @@ class Text2Encode(BaseModel):
 
 @app.get("/tokenizers")
 async def get_tokenizers():
-    print("tokenizer choices:", len(tokenizer_options[0]["options"]), len(tokenizer_options[1]["options"]))
-    print("tokenizer choice 0:", tokenizer_options[0]["options"])
     return tokenizer_options
 
 @app.post("/tokenize")
@@ -85,7 +83,6 @@ async def tokenize_text(data: Text2Encode):
     tokenizer: BaseTokenizer = tokenizers.get(tokenizer_name) # TODO: handdle parameters automatically here
     if not tokenizer:
         return {"error": "tokenizer not implemented"}
-    print(tokenizer)
     encoded = tokenizer.encode(text, retrieve_splitted_text=True, verbose=False)
     if type(encoded[0]) == int:
         words = [""]
