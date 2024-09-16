@@ -28,14 +28,16 @@ const App = () => {
               </div>
               <div className="item2">
                 <label >
-                  Choose Tokenizer:
+                  {/* Choose Tokenizer: */}
                     <SelectTokenizer/>
                 </label>
               </div>
-              <div className="c-50">
+              <div>
                   <TextToToken/>
               </div>
-              <Tokens/>
+              <div>
+                <Tokens/>
+              </div>
             </main>
           </CurrentWordsProvider>
         </CurrentTokensProvider>

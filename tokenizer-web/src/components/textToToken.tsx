@@ -44,13 +44,12 @@ export const TextToToken = () => {
     }, [selectedTokenizer, text])
 
     return (
-        <div className="c-50">
+        <div>
             <textarea
                 value={text}
                 onChange={handleTextChange}
                 placeholder="Enter text to tokenize"
-                rows={4}
-                cols={50}
+                className="block p-2.5 w-full h-full rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
         </div>
     )
