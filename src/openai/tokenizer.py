@@ -44,8 +44,7 @@ class TikTokenizer:
         ):
         token_ids = self.model.encode(text, allowed_special="all")
         if retrieve_splitted_text:
-            output = [(tk, wrd) for tk, wrd in zip(token_ids, self.get_words(token_ids))]
-            return output
+            return list(zip(token_ids, self.get_words(token_ids)))
         return token_ids
     
 
